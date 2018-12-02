@@ -9,6 +9,8 @@ import rospy
 from std_msgs.msg import UInt16
 import cv2
 import cv2.aruco as aruco
+import time
+import matplotlib.pyplot as plt
 
 def get_distance(ret,frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -36,40 +38,90 @@ def get_distance(ret,frame):
         dX = shape_center_x - midX
         dY = shape_center_y - midY
 
-    gray = aruco.drawDetectedMarkers(gray, corners)
+    gray = aruco.drawDetectedMarkers(frame, corners)
 
-    cv2.imshow('frame',gray)
+    horizontal_img = cv2.flip( gray, 0 )
+    cv2.imshow('frame_',horizontal_img)
     cv2.waitKey(1)
-    #return [dX,dY]
-    return dX
+
+    return [dX,dY]
 
 def distanceGenerator():
+
+    # Calculate number of pixels corresponding to 1 degree
     cap = cv2.VideoCapture(0)
     ret,frame = cap.read()
-    pubServo_1Servo_1 = rospy.pubServo_1Servo_1lisher('servo', UInt16, queue_size=10)
-    rospy.init_node('distanceGenerator', anonymous=True)
-    rate = rospy.Rate(0.8) # in hz
-
-    # Number of pixels corresponding to 1 degree
     height, width = frame.shape [:2]
     oneDeg = width/62
 
-    initialPosition = 90 # initial position of servo
+
+    # Initialize ROS environment
+    pubServo_x = rospy.Publisher('servo_x', UInt16, queue_size=1)
+    pubServo_y = rospy.Publisher('servo_y', UInt16, queue_size=1)
+    rospy.init_node('distanceGenerator', anonymous=True)
+    rate = rospy.Rate(10) # wait untill it turns (in hz)
+
+    initialPosition_x = 40
+    initialPosition_y = 90
+    actualPosition_x = initialPosition_x
+    actualPosition_y = initialPosition_y
+    goneToInitial = False
 
     while not rospy.is_shutdown():
-        # Get the image
-        ret,frame = cap.read()
 
-        # Get the distance from the image
-        distanceX = get_distance(ret, frame)
-        toTurn = initialPosition + int(distanceX/oneDeg)
+        # Go to initial position
+        connections_x = pubServo_x.get_num_connections()
+        connections_y = pubServo_y.get_num_connections()
+        rospy.loginfo('Connections X: %d', connections_x)
+        rospy.loginfo('Connections Y: %d', connections_y)
 
-        if toTurn < 10:
-            return
-        # pubServo_1Servo_1lish to ROS environment
-        rospy.loginfo(toTurn)
-        pubServo_1Servo_1.pubServo_1Servo_1lish(toTurn)
-        rate.sleep()
+        if connections_x > 1 and connections_y > 1 and goneToInitial == False:
+            rospy.loginfo("Go to initial position")
+            goneToInitial = True
+            pubServo_x.publish(initialPosition_x)
+            rate.sleep()
+            pubServo_y.publish(initialPosition_y)
+            rate.sleep()
+            pubServo_x.publish(0)
+            rate.sleep()
+            pubServo_y.publish(0)
+            rate.sleep()
+            pubServo_x.publish(180)
+            rate.sleep()
+            pubServo_y.publish(180)
+            rate.sleep()
+            pubServo_x.publish(initialPosition_x)
+            pubServo_y.publish(initialPosition_y)
+
+        # Go to aruco position
+        elif (connections_x > 0) and (goneToInitial == True):
+            rospy.loginfo("Go to aruco position")
+
+            # Get position of aruco marker
+            ret,frame = cap.read()
+            dX, dY = get_distance(ret, frame)
+            diffDeg_x = int(dX/oneDeg)
+            diffDeg_y = int(dY/oneDeg)
+            arucoPosition_x = initialPosition_x + diffDeg_x
+            arucoPosition_y = initialPosition_y + diffDeg_y
+
+            # Control loop with arucoPosition as input and actualPosition as output
+            TOL = 2 # Tolerance for controller
+            while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
+                actualPosition_x = actualPosition_x + diffDeg_x/5
+                actualPosition_y = actualPosition_y + diffDeg_y/5
+                print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
+                print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
+                pubServo_x.publish(actualPosition_x)
+                pubServo_y.publish(actualPosition_y)
+                rate.sleep()
+
+                ret,frame = cap.read()
+                dX, dY = get_distance(ret, frame)
+                diffDeg_x = int(dX/oneDeg)
+                diffDeg_y = int(dY/oneDeg)
+                arucoPosition_x = initialPosition_x + diffDeg_x
+                arucoPosition_y = initialPosition_y + diffDeg_y
 
 if __name__ == '__main__':
     try:
