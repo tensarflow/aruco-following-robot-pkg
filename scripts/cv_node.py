@@ -83,13 +83,13 @@ def distanceGenerator():
             ret,frame = cap.read()
             dX = get_distance(ret, frame)
             diffDeg_x = int(dX/oneDeg)
-            arucoPosition_x = initialPosition_x - diffDeg_x
+            arucoPosition_x = initialPosition_x + diffDeg_x
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
             while (abs(diffDeg_x) > TOL):
 
-                actualPosition_x = actualPosition_x + diffDeg_x/5
+                actualPosition_x = actualPosition_x - diffDeg_x/5
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
 
                 if actualPosition_x < 0:
