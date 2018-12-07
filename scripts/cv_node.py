@@ -102,7 +102,7 @@ def distanceGenerator():
                 if actualPosition_x < -180.0:
                     print("Can't go further...")
 
-                elif actualPosition_x > 180.0
+                elif actualPosition_x > 180.0:
                     print("Can't go further...")
 
                 else:
