@@ -81,17 +81,6 @@ def distanceGenerator():
             pubServo_x.publish(initialPosition_x)
             rate.sleep()
             pubServo_y.publish(initialPosition_y)
-            rate.sleep()
-            pubServo_x.publish(0)
-            rate.sleep()
-            pubServo_y.publish(0)
-            rate.sleep()
-            pubServo_x.publish(180)
-            rate.sleep()
-            pubServo_y.publish(180)
-            rate.sleep()
-            pubServo_x.publish(initialPosition_x)
-            pubServo_y.publish(initialPosition_y)
 
         # Go to aruco position
         elif (connections_x > 0) and (goneToInitial == True):
