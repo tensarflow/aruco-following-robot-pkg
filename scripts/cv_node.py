@@ -40,8 +40,7 @@ def get_distance(ret,frame):
 
     gray = aruco.drawDetectedMarkers(frame, corners)
 
-    horizontal_img = cv2.flip( gray, 0 )
-    cv2.imshow('frame_',horizontal_img)
+    cv2.imshow('frame_',gray)
     cv2.waitKey(1)
 
     # return [dX,dY]
@@ -74,12 +73,6 @@ def distanceGenerator():
         if connections_x > 0 and goneToInitial == False:
             rospy.loginfo("Go to initial position")
             goneToInitial = True
-            pubServo.publish(initialPosition_x)
-            rate.sleep()
-            pubServo.publish(0)
-            rate.sleep()
-            pubServo.publish(180)
-            rate.sleep()
             pubServo.publish(initialPosition_x)
 
         # Go to aruco position
