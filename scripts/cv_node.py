@@ -61,7 +61,7 @@ def distanceGenerator():
     rospy.init_node('distanceGenerator', anonymous=True)
     rate = rospy.Rate(10) # wait untill it turns (in hz)
 
-    initialPosition_x = 40
+    initialPosition_x = 90
     actualPosition_x = initialPosition_x
     goneToInitial = False
 
@@ -98,8 +98,16 @@ def distanceGenerator():
 
                 actualPosition_x = actualPosition_x + diffDeg_x/5
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
-                pubServo.publish(actualPosition_x)
-                rate.sleep()
+
+                if actualPosition_x < -180.0:
+                    print("Can't go further...")
+
+                elif actualPosition_x > 180.0
+                    print("Can't go further...")
+
+                else:
+                    pubServo.publish(actualPosition_x)
+                    rate.sleep()
 
                 ret,frame = cap.read()
                 dX = get_distance(ret, frame)
