@@ -44,7 +44,8 @@ def get_distance(ret,frame):
     cv2.imshow('frame_',horizontal_img)
     cv2.waitKey(1)
 
-    return [dX,dY]
+    # return [dX,dY]
+    return dX
 
 def distanceGenerator():
 
@@ -56,42 +57,30 @@ def distanceGenerator():
 
 
     # Initialize ROS environment
-    pubServo_x = rospy.Publisher('servo_x', UInt16, queue_size=1)
-    pubServo_y = rospy.Publisher('servo_y', UInt16, queue_size=1)
+    pubServo = rospy.Publisher('servo', UInt16, queue_size=1)
     rospy.init_node('distanceGenerator', anonymous=True)
     rate = rospy.Rate(10) # wait untill it turns (in hz)
 
     initialPosition_x = 40
-    initialPosition_y = 90
     actualPosition_x = initialPosition_x
-    actualPosition_y = initialPosition_y
     goneToInitial = False
 
     while not rospy.is_shutdown():
 
         # Go to initial position
-        connections_x = pubServo_x.get_num_connections()
-        connections_y = pubServo_y.get_num_connections()
+        connections_x = pubServo.get_num_connections()
         rospy.loginfo('Connections X: %d', connections_x)
-        rospy.loginfo('Connections Y: %d', connections_y)
 
-        if connections_x > 1 and connections_y > 1 and goneToInitial == False:
+        if connections_x > 1 and goneToInitial == False:
             rospy.loginfo("Go to initial position")
             goneToInitial = True
-            pubServo_x.publish(initialPosition_x)
+            pubServo.publish(initialPosition_x)
             rate.sleep()
-            pubServo_y.publish(initialPosition_y)
+            pubServo.publish(0)
             rate.sleep()
-            pubServo_x.publish(0)
+            pubServo.publish(180)
             rate.sleep()
-            pubServo_y.publish(0)
-            rate.sleep()
-            pubServo_x.publish(180)
-            rate.sleep()
-            pubServo_y.publish(180)
-            rate.sleep()
-            pubServo_x.publish(initialPosition_x)
-            pubServo_y.publish(initialPosition_y)
+            pubServo.publish(initialPosition_x)
 
         # Go to aruco position
         elif (connections_x > 0) and (goneToInitial == True):
@@ -99,29 +88,23 @@ def distanceGenerator():
 
             # Get position of aruco marker
             ret,frame = cap.read()
-            dX, dY = get_distance(ret, frame)
+            dX = get_distance(ret, frame)
             diffDeg_x = int(dX/oneDeg)
-            diffDeg_y = int(dY/oneDeg)
             arucoPosition_x = initialPosition_x + diffDeg_x
-            arucoPosition_y = initialPosition_y + diffDeg_y
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
-            while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
+            while (abs(diffDeg_x) > TOL):
+                
                 actualPosition_x = actualPosition_x + diffDeg_x/5
-                actualPosition_y = actualPosition_y + diffDeg_y/5
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
-                print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
-                pubServo_x.publish(actualPosition_x)
-                pubServo_y.publish(actualPosition_y)
+                pubServo.publish(actualPosition_x)
                 rate.sleep()
 
                 ret,frame = cap.read()
-                dX, dY = get_distance(ret, frame)
+                dX = get_distance(ret, frame)
                 diffDeg_x = int(dX/oneDeg)
-                diffDeg_y = int(dY/oneDeg)
                 arucoPosition_x = initialPosition_x + diffDeg_x
-                arucoPosition_y = initialPosition_y + diffDeg_y
 
 if __name__ == '__main__':
     try:
