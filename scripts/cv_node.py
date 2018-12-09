@@ -52,7 +52,7 @@ def distanceGenerator():
     cap = cv2.VideoCapture(0)
     ret,frame = cap.read()
     height, width = frame.shape [:2]
-    oneDeg = width/125
+    oneDeg = width/30
 
 
     # Initialize ROS environment
@@ -61,10 +61,8 @@ def distanceGenerator():
     rospy.init_node('distanceGenerator', anonymous=True)
     rate = rospy.Rate(100) # wait untill it turns (in hz)
 
-    initialPosition_x = 40
-    initialPosition_y = 90
-    actualPosition_x = initialPosition_x
-    actualPosition_y = initialPosition_y
+    actualPosition_x = 90
+    actualPosition_y = 90
     goneToInitial = False
 
     while not rospy.is_shutdown():
@@ -99,8 +97,8 @@ def distanceGenerator():
             TOL = 2 # Tolerance for controller
             while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
 
-                actualPosition_x = actualPosition_x + diffDeg_x/4
-                actualPosition_y = actualPosition_y + diffDeg_y/4
+                actualPosition_x = actualPosition_x + int(diffDeg_x/4)
+                actualPosition_y = actualPosition_y + int(diffDeg_y/4)
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
                 print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
 
