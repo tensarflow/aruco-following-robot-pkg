@@ -17,7 +17,7 @@ And do `ssh -R 52698:localhost:52698 ubuntu@10.42.0.211` to connect properly. Do
 
 ## ROS Package
 
-To install the package in your ROS environment, clone the package `name_of_package` in the `../catkin_ws/src/` directory and run `catkin_make` in `../catkin_ws/`.
+To install the package in your ROS environment, clone the package `computer_vision_pkg` in the `../catkin_ws/src/` directory and run `catkin_make` in `../catkin_ws/`.
 
 ## Usage
 
