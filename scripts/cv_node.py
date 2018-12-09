@@ -54,7 +54,7 @@ def distanceGenerator():
     cap = cv2.VideoCapture(0)
     ret,frame = cap.read()
     height, width = frame.shape [:2]
-    oneDeg = width/60
+    oneDeg = width/17
 
 
     # Initialize ROS environment
