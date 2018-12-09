@@ -99,8 +99,8 @@ def distanceGenerator():
 
                 actualPosition_x = actualPosition_x + int(diffDeg_x/4)
                 actualPosition_y = actualPosition_y + int(diffDeg_y/4)
-                print "Control: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
-                print "Control: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
+                print "Control: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(diffDeg_x)
+                print "Control: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(diffDeg_y)
 
                 if actualPosition_x < 0 or actualPosition_x > 180.0:
                     print("X: Can't go further...")
