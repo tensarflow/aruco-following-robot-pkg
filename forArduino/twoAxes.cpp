@@ -39,7 +39,6 @@ ros::Subscriber<std_msgs::UInt16> sub_x("servo_x", servo_x_cb);
 ros::Subscriber<std_msgs::UInt16> sub_y("servo_y", servo_x_cb);
 
 void setup(){
-  pinMode(13, OUTPUT);
 
   nh.initNode();
   nh.subscribe(sub_x);
