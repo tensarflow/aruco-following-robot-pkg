@@ -95,7 +95,7 @@ def distanceGenerator():
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
-            while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
+            while ((abs(diffDeg_x) > TOL) or (abs(diffDeg_y) > TOL)):
 
                 actualPosition_x = actualPosition_x + int(diffDeg_x/4)
                 actualPosition_y = actualPosition_y + int(diffDeg_y/4)
