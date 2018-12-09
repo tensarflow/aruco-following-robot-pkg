@@ -97,8 +97,8 @@ def distanceGenerator():
             TOL = 2 # Tolerance for controller
             while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
 
-                actualPosition_x = actualPosition_x - int(diffDeg_x/4)
-                actualPosition_y = actualPosition_y - int(diffDeg_y/4)
+                actualPosition_x = actualPosition_x + int(diffDeg_x/4)
+                actualPosition_y = actualPosition_y + int(diffDeg_y/4)
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
                 print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
 
