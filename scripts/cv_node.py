@@ -59,7 +59,7 @@ def distanceGenerator():
     pubServo_x = rospy.Publisher('servo_x', UInt16, queue_size=30)
     pubServo_y = rospy.Publisher('servo_y', UInt16, queue_size=30)
     rospy.init_node('distanceGenerator', anonymous=True)
-    rate = rospy.Rate(2) # wait untill it turns (in hz)
+    rate = rospy.Rate(10) # wait untill it turns (in hz)
 
     initialPosition_x = 40
     initialPosition_y = 90
@@ -81,6 +81,7 @@ def distanceGenerator():
             pubServo_x.publish(initialPosition_x)
             rate.sleep()
             pubServo_y.publish(initialPosition_y)
+            rate.sleep()
 
         # Go to aruco position
         elif (connections_x > 0) and (connections_y > 0) and (goneToInitial == True):
@@ -97,13 +98,31 @@ def distanceGenerator():
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
             while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
-                actualPosition_x = actualPosition_x + diffDeg_x/5
+
+                actualPosition_x = actualPosition_x - diffDeg_x/5
                 actualPosition_y = actualPosition_y + diffDeg_y/5
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
                 print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
-                pubServo_x.publish(actualPosition_x)
-                pubServo_y.publish(actualPosition_y)
-                rate.sleep()
+
+                if actualPosition_x < 0:
+                    print("X: Can't go further...")
+
+                elif actualPosition_x > 180.0:
+                    print("X: Can't go further...")
+
+                else:
+                    pubServo_x.publish(actualPosition_x)
+                    rate.sleep()
+
+                if actualPosition_y < 0:
+                    print("Y: Can't go further...")
+
+                elif actualPosition_y > 180.0:
+                    print("Y: Can't go further...")
+
+                else:
+                    pubServo_y.publish(actualPosition_y)
+                    rate.sleep()
 
                 ret,frame = cap.read()
                 dX, dY = get_distance(ret, frame)
