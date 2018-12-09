@@ -44,7 +44,7 @@ def get_distance(ret,frame):
     cv2.waitKey(1)
 
     # return [dX,dY]
-    return dX
+    return dY
 
 def distanceGenerator():
 
@@ -56,12 +56,12 @@ def distanceGenerator():
 
 
     # Initialize ROS environment
-    pubServo = rospy.Publisher('servo', UInt16, queue_size=1)
+    pubServo = rospy.Publisher('servo_y', UInt16, queue_size=1)
     rospy.init_node('distanceGenerator', anonymous=True)
     rate = rospy.Rate(10) # wait untill it turns (in hz)
 
-    initialPosition_x = 90
-    actualPosition_x = initialPosition_x
+    initialPosition_y = 90
+    actualPosition_y = initialPosition_y
     goneToInitial = False
 
     while not rospy.is_shutdown():
@@ -73,7 +73,7 @@ def distanceGenerator():
         if connections_x > 0 and goneToInitial == False:
             rospy.loginfo("Go to initial position")
             goneToInitial = True
-            pubServo.publish(initialPosition_x)
+            pubServo.publish(initialPosition_y)
 
         # Go to aruco position
         elif (connections_x > 0) and (goneToInitial == True):
@@ -81,31 +81,31 @@ def distanceGenerator():
 
             # Get position of aruco marker
             ret,frame = cap.read()
-            dX = get_distance(ret, frame)
-            diffDeg_x = int(dX/oneDeg)
-            arucoPosition_x = initialPosition_x + diffDeg_x
+            dY = get_distance(ret, frame)
+            diffDeg_y = int(dY/oneDeg)
+            arucoPosition_y = initialPosition_y + diffDeg_y
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
-            while (abs(diffDeg_x) > TOL):
+            while (abs(diffDeg_y) > TOL):
 
-                actualPosition_x = actualPosition_x - diffDeg_x/5
-                print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
+                actualPosition_y = actualPosition_y - diffDeg_y/5
+                print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dY)
 
-                if actualPosition_x < 0:
+                if actualPosition_y < 0:
                     print("Can't go further...")
 
-                elif actualPosition_x > 180.0:
+                elif actualPosition_y > 180.0:
                     print("Can't go further...")
 
                 else:
-                    pubServo.publish(actualPosition_x)
+                    pubServo.publish(actualPosition_y)
                     rate.sleep()
 
                 ret,frame = cap.read()
-                dX = get_distance(ret, frame)
-                diffDeg_x = int(dX/oneDeg)
-                arucoPosition_x = initialPosition_x + diffDeg_x
+                dY = get_distance(ret, frame)
+                diffDeg_y = int(dY/oneDeg)
+                arucoPosition_y = initialPosition_y + diffDeg_y
 
 if __name__ == '__main__':
     try:
