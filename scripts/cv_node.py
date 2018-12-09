@@ -78,9 +78,9 @@ def distanceGenerator():
         if (connections_x > 0) and (connections_y > 0) and (goneToInitial == False):
             rospy.loginfo("Go to initial position")
             goneToInitial = True
-            pubServo_x.publish(initialPosition_x)
+            pubServo_x.publish(actualPosition_x)
             rate.sleep()
-            pubServo_y.publish(initialPosition_y)
+            pubServo_y.publish(actualPosition_y)
             rate.sleep()
 
         # Go to aruco position
