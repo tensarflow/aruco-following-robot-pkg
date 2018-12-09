@@ -56,8 +56,8 @@ def distanceGenerator():
 
 
     # Initialize ROS environment
-    pubServo_x = rospy.Publisher('servo_x', UInt16, queue_size=30)
-    pubServo_y = rospy.Publisher('servo_y', UInt16, queue_size=30)
+    pubServo_x = rospy.Publisher('servo_x', UInt16, queue_size=1)
+    pubServo_y = rospy.Publisher('servo_y', UInt16, queue_size=1)
     rospy.init_node('distanceGenerator', anonymous=True)
     rate = rospy.Rate(10) # wait untill it turns (in hz)
 
