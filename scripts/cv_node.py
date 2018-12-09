@@ -98,7 +98,7 @@ def distanceGenerator():
             while ((abs(diffDeg_x) > TOL) or (abs(diffDeg_y) > TOL)):
 
                 actualPosition_x = actualPosition_x + int(diffDeg_x)
-                actualPosition_y = actualPosition_y + int(diffDeg_y)
+                actualPosition_y = actualPosition_y - int(diffDeg_y)
                 print "Control: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(diffDeg_x)
                 print "Control: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(diffDeg_y)
 
