@@ -75,7 +75,7 @@ def distanceGenerator():
         rospy.loginfo('Connections X: %d', connections_x)
         rospy.loginfo('Connections Y: %d', connections_y)
 
-        if connections_x > 1 and connections_y > 1 and goneToInitial == False:
+        if (connections_x > 0) and (connections_y > 0) and (goneToInitial == False):
             rospy.loginfo("Go to initial position")
             goneToInitial = True
             pubServo_x.publish(initialPosition_x)
@@ -83,7 +83,7 @@ def distanceGenerator():
             pubServo_y.publish(initialPosition_y)
 
         # Go to aruco position
-        elif (connections_x > 0) and (goneToInitial == True):
+        elif (connections_x > 0) and (connections_y > 0) and (goneToInitial == True):
             rospy.loginfo("Go to aruco position")
 
             # Get position of aruco marker
