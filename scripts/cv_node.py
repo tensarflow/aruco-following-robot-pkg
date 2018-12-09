@@ -92,20 +92,20 @@ def distanceGenerator():
             dX, dY = get_distance(ret, frame)
             diffDeg_x = int(dX/oneDeg)
             diffDeg_y = int(dY/oneDeg)
-            arucoPosition_x = initialPosition_x + diffDeg_x
-            arucoPosition_y = initialPosition_y + diffDeg_y
+            #arucoPosition_x = initialPosition_x + diffDeg_x
+            #arucoPosition_y = initialPosition_y + diffDeg_y
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
-            if ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
+            while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
 
-                actualPosition_x = actualPosition_x - diffDeg_x
-                actualPosition_y = actualPosition_y - diffDeg_y
+                actualPosition_x = actualPosition_x + diffDeg_x/4
+                actualPosition_y = actualPosition_y + diffDeg_y/4
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
                 print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
 
                 if actualPosition_x < 0 or actualPosition_x > 180.0:
-                    print("X: Can't go further...")         
+                    print("X: Can't go further...")
 
                 else:
                     pubServo_x.publish(actualPosition_x)
@@ -122,8 +122,8 @@ def distanceGenerator():
                 dX, dY = get_distance(ret, frame)
                 diffDeg_x = int(dX/oneDeg)
                 diffDeg_y = int(dY/oneDeg)
-                arucoPosition_x = initialPosition_x + diffDeg_x
-                arucoPosition_y = initialPosition_y + diffDeg_y
+                #arucoPosition_x = initialPosition_x + diffDeg_x
+                #arucoPosition_y = initialPosition_y + diffDeg_y
 
 if __name__ == '__main__':
     try:
