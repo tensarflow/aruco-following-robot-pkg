@@ -77,7 +77,6 @@ def distanceGenerator():
             rospy.loginfo("Go to initial position")
             goneToInitial = True
             pubServo_x.publish(actualPosition_x)
-            rate.sleep()
             pubServo_y.publish(actualPosition_y)
             rate.sleep()
 
