@@ -59,7 +59,7 @@ def distanceGenerator():
     pubServo_x = rospy.Publisher('servo_x', UInt16, queue_size=1)
     pubServo_y = rospy.Publisher('servo_y', UInt16, queue_size=1)
     rospy.init_node('distanceGenerator', anonymous=True)
-    rate = rospy.Rate(10) # wait untill it turns (in hz)
+    rate = rospy.Rate(100) # wait untill it turns (in hz)
 
     initialPosition_x = 40
     initialPosition_y = 90
