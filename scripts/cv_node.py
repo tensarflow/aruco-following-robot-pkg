@@ -102,18 +102,21 @@ def distanceGenerator():
                 print "Control: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(diffDeg_x)
                 print "Control: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(diffDeg_y)
 
-                if actualPosition_x < 0 or actualPosition_x > 180.0:
-                    print("X: Can't go further...")
-
-                else:
-                    pubServo_x.publish(actualPosition_x)
-
                 if actualPosition_y < 0 or actualPosition_y > 180.0:
                     print("Y: Can't go further...")
 
                 else:
                     pubServo_y.publish(actualPosition_y)
                     rate.sleep()
+
+                if actualPosition_x < 0 or actualPosition_x > 180.0:
+                    print("X: Can't go further...")
+
+                else:
+                    pubServo_x.publish(actualPosition_x)
+                    rate.sleep()
+
+
 
                 ret,frame = cap.read()
                 dX, dY = get_distance(ret, frame)
