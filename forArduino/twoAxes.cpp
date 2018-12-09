@@ -1,9 +1,9 @@
 /*
  * rosserial Servo Control Example
  *
- * This sketch demonstrates the control of hobby R/C servos
+ * This sketch demonstrates the control of hobby R/C servo_xs
  * using ROS and the arduiono
- * 
+ *
  * For the full tutorial write up, visit
  * www.ros.org/wiki/rosserial_arduino_demos
  *
@@ -18,29 +18,35 @@
  #include <WProgram.h>
 #endif
 
-#include <Servo.h> 
+#include <Servo.h>
 #include <ros.h>
 #include <std_msgs/UInt16.h>
 
 ros::NodeHandle  nh;
 
-Servo servo;
+Servo servo_x;
+Servo servo_y;
 
-void servo_cb( const std_msgs::UInt16& cmd_msg){
-  servo.write(cmd_msg.data); //set servo angle, should be from 0-180  
-  digitalWrite(13, HIGH-digitalRead(13));  //toggle led  
+void servo_x_cb( const std_msgs::UInt16& cmd_msg){
+  servo_x.write(cmd_msg.data); //set servo_x angle, should be from 0-180
 }
 
+void servo_y_cb( const std_msgs::UInt16& cmd_msg){
+  servo_y.write(cmd_msg.data); //set servo_y angle, should be from 0-180
+}
 
-ros::Subscriber<std_msgs::UInt16> sub("servo", servo_cb);
+ros::Subscriber<std_msgs::UInt16> sub_x("servo_x", servo_x_cb);
+ros::Subscriber<std_msgs::UInt16> sub_y("servo_y", servo_x_cb);
 
 void setup(){
   pinMode(13, OUTPUT);
 
   nh.initNode();
-  nh.subscribe(sub);
-  
-  servo.attach(9); //attach it to pin 9
+  nh.subscribe(sub_x);
+  nh.subscribe(sub_y);
+
+  servo_x.attach(9); //attach it to pin 9
+  servo_y.attach(10); //attach it to pin 10
 }
 
 void loop(){
