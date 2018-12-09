@@ -52,7 +52,7 @@ def distanceGenerator():
     cap = cv2.VideoCapture(0)
     ret,frame = cap.read()
     height, width = frame.shape [:2]
-    oneDeg = width/62
+    oneDeg = width/25
 
 
     # Initialize ROS environment
@@ -97,27 +97,21 @@ def distanceGenerator():
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
-            while ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
+            if ((abs(diffDeg_x) > TOL) and (abs(diffDeg_y) > TOL)):
 
-                actualPosition_x = actualPosition_x - diffDeg_x/5
-                actualPosition_y = actualPosition_y + diffDeg_y/5
+                actualPosition_x = actualPosition_x - diffDeg_x
+                actualPosition_y = actualPosition_y - diffDeg_y
                 print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
                 print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
 
-                if actualPosition_x < 0:
-                    print("X: Can't go further...")
-
-                elif actualPosition_x > 180.0:
-                    print("X: Can't go further...")
+                if actualPosition_x < 0 or actualPosition_x > 180.0:
+                    print("X: Can't go further...")         
 
                 else:
                     pubServo_x.publish(actualPosition_x)
                     rate.sleep()
 
-                if actualPosition_y < 0:
-                    print("Y: Can't go further...")
-
-                elif actualPosition_y > 180.0:
+                if actualPosition_y < 0 or actualPosition_y > 180.0:
                     print("Y: Can't go further...")
 
                 else:
