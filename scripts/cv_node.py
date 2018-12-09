@@ -90,8 +90,8 @@ def distanceGenerator():
             diffDeg_x = int(dX/oneDeg)
             diffDeg_y = int(dY/oneDeg)
 
-            print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(dX)
-            print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(dY)
+            print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(diffDeg_x)
+            print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(diffDeg_y)
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
