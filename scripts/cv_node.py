@@ -90,8 +90,8 @@ def distanceGenerator():
             diffDeg_x = int(dX/oneDeg)
             diffDeg_y = int(dY/oneDeg)
 
-            print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(actualPosition_x)
-            print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(actualPosition_y)
+            print "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(diffDeg_x)
+            print "yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(diffDeg_y)
 
             # Control loop with arucoPosition as input and actualPosition as output
             TOL = 2 # Tolerance for controller
@@ -99,8 +99,8 @@ def distanceGenerator():
 
                 actualPosition_x = actualPosition_x + int(diffDeg_x)
                 actualPosition_y = actualPosition_y + int(diffDeg_y)
-                print "Control: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(actualPosition_x)
-                print "Control: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(actualPosition_y)
+                print "Control: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx: " + str(diffDeg_x)
+                print "Control: yyyyyyyyyyyyyyyyyyyyyyyyyyyyy: " + str(diffDeg_y)
 
                 if actualPosition_x < 0 or actualPosition_x > 180.0:
                     print("X: Can't go further...")
