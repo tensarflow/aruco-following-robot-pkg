@@ -19,8 +19,8 @@ def get_distance(ret,frame):
     corners, ids, rejectedImgPoints = aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
     shape_center_x = 0
     shape_center_y = 0
-    dX = 0
-    dY = 0
+    dX = -5000
+    dY = -5000
 
     if len(corners) > 0:
         for i in corners:
@@ -37,6 +37,8 @@ def get_distance(ret,frame):
         midY = height / 2
         dX = shape_center_x - midX
         dY = shape_center_y - midY
+    else:
+        print "No aruco marker!"
 
     gray = aruco.drawDetectedMarkers(frame, corners)
 
@@ -70,9 +72,7 @@ def distanceGenerator():
         # Go to initial position
         connections_x = pubServo_x.get_num_connections()
         connections_y = pubServo_y.get_num_connections()
-        rospy.loginfo('Connections X: %d', connections_x)
-        rospy.loginfo('Connections Y: %d', connections_y)
-
+        
         if (connections_x > 0) and (connections_y > 0) and (goneToInitial == False):
             rospy.loginfo("Go to initial position")
             goneToInitial = True
@@ -106,7 +106,6 @@ def distanceGenerator():
 
                 else:
                     pubServo_x.publish(actualPosition_x)
-                    rate.sleep()
 
                 if actualPosition_y < 0 or actualPosition_y > 180.0:
                     print("Y: Can't go further...")
