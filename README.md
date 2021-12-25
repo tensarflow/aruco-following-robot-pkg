@@ -1,5 +1,5 @@
-# Documentation computer_vision_pkg - Package
-This is the computer vision repository of project ebabil
+# Documentation
+This is the computer vision repository of an aruco-code following gimbal
 
 
 ## Convinient hacks
